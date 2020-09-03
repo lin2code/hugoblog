@@ -21,7 +21,7 @@ hasCJKLanguage = true
   motto = "生死看淡 不服就干 活"
 
   #rss = true
-  # utterancesRepo = ""
+  #utterancesRepo = ""
   
   github = "https://github.com/lin2code"
   email = "631320085@163.com"
