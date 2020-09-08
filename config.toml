@@ -23,11 +23,11 @@ hasCJKLanguage = true
   #rss = true
   #utterancesRepo = ""
   
-  github = "https://github.com/lin2code"
+  github = "lin2code"
   email = "631320085@163.com"
-  twitter = "https://twitter.com/yourlostpapa"
-  instagram = "https://www.instagram.com/0xfade2018/"
-  stackoverflow = "https://stackoverflow.com/users/12997179/lin2code"
+  twitter = "yourlostpapa"
+  instagram = "0xfade2018"
+  stackoverflow = "12997179"
   # facebook = ""
   # linkedin = ""
   # codepen = ""
