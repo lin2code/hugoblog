@@ -1,5 +1,5 @@
 ---
-title: 使用Docker部署WordPress
+title: 使用Docker部署WordPress+Mysql
 date: 2020-09-08T18:44:41+08:00
 lastmod: 2020-09-08T18:44:41+08:00
 author: 林二狗
@@ -15,27 +15,27 @@ tags:
 draft: false
 ---
 
-1. 购买服务器注册域名....
-   
-2. 登录系统先`yum update`一下
-   
-3. 安装docker
-   
-   centos 8先执行以下命令安装一个containerd.io  
-   `yum install https://download.docker.com/linux/fedora/30/x86_64/stable/Packages/containerd.io-1.2.6-3.3.fc30.x86_64.rpm`
+## 1. 购买服务器注册域名
 
-   否则直接执行以下命令安装docker  
-   `curl -fsSL https://get.docker.com | bash -s docker --mirror Aliyun`
+## 2. 登录系统先`yum update`一下
 
-   启动docker`systemctl start docker`
+## 3. 安装docker
 
-4. 安装python和docker-compose
-   
-   `yum install python3`
-   `pip3 install docker-compose`
+centos 8先执行以下命令安装一个containerd.io  
+`yum install https://download.docker.com/linux/fedora/30/x86_64/stable/Packages/containerd.io-1.2.6-3.3.fc30.x86_64.rpm`
 
-5. 在/data/wordpress目录下创建一个docker-compose.yml
-   
+否则直接执行以下命令安装docker  
+`curl -fsSL https://get.docker.com | bash -s docker --mirror Aliyun`
+
+启动docker： `systemctl start docker`
+
+## 4. 安装python和docker-compose
+
+`yum install python3`
+`pip3 install docker-compose`
+
+## 5. 在/data/wordpress目录下创建一个docker-compose.yml
+
 ```yml
 version: '3.1'
 services:
@@ -71,19 +71,20 @@ volumes:
 
 ```
 
-6. 在/data/wordpress目录下
-   
-   * 先执行`docker-compose up -d db`启动和初始化数据库，启动起了可以`docker exec -it db的id /bin/bash`进去用mysql命令检查一下用户是否创建好了  
-  
-   * 再执行`docker-compose up -d wordpress`启动应用
-   
-7. 安装nginx
-   
-   自行百度
+## 6. 在/data/wordpress目录下
 
-8. 配置nginx
-   
-   加入这段，注意proxy_pass里一定要写ip
+* 先执行`docker-compose up -d db`启动和初始化数据库，启动起了可以`docker exec -it db的id /bin/bash`进去用mysql命令检查一下用户是否创建好了  
+
+* 再执行`docker-compose up -d wordpress`启动应用
+
+## 7. 安装nginx
+
+自行百度
+
+## 8. 配置nginx
+
+加入这段，注意proxy_pass里一定要写ip
+
 ```nginx
 server {
   listen 80;
@@ -104,6 +105,7 @@ server {
   }
 }
 ```
-9. reload nginx后，确保各个镜像正常运行后，在浏览器中输入网址访问
-  
-   God bless you.
+
+## 9. reload nginx后，确保各个镜像正常运行后，在浏览器中输入网址访问
+
+God bless you.
