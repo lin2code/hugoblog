@@ -13,7 +13,7 @@ hasCJKLanguage = true
 [params]
   #background = "black"
   backgroundImage = "/img/background.jpg"
-  linkColor = "seagreen"
+  linkColor = "#2185d0"
 
   author = "林二狗"
   description = "林二狗的笔记本"

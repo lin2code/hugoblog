@@ -113,25 +113,13 @@ http {
     client_max_body_size 20M; #单次上传数据缓冲区最大值
     underscores_in_headers on; #ctmd 不加这个header中有“_”会忽略
 
-    #docker中运行WordPress时的配置
+    #静态文件配置
     server {
         listen 80;
-        server_name xxxx.com; #绑定的域名 优先使用server_name和请求域名一致的配置
-
-        access_log /usr/local/nginx/logs/wordpress.access.log; #该域名的请求日志配置
-        set $node_port 18080; #变量 WordPress在docker中暴露的端口
+        server_name lin.hoojoe.com;
         location / {
-            #各种转发设置 避免WordPress中静态资源路径不是nginx代理的域名 导致加载不出来
-            proxy_set_header X-Real-IP $remote_addr;
-            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-            proxy_set_header Host $http_host;
-            proxy_set_header X-NginX-Proxy true;
-            proxy_set_header Upgrade $http_upgrade;
-            proxy_set_header Connection "upgrade";
-            #代理的目标地址 docker运行程序时 一定要用IP而不是localhost！！！
-            proxy_pass http://127.0.0.1:$node_port$request_uri;
-            proxy_redirect off;
-            client_max_body_size 200m; #上传文件大小配置 覆盖全局配置
+            root /opt/lin2code.github.io; #静态文件路径
+            index index.html; #起始文件
         }
     }
 
@@ -171,6 +159,28 @@ http {
         location /hangfire {
             rewrite  ^/hangfire/(.*)$ /hangfire/$1 break;
             proxy_pass https://localhost:8011;
+        }
+    }
+
+    #docker中运行WordPress时的配置
+    server {
+        listen 80;
+        server_name xxxx.com; #绑定的域名 优先使用server_name和请求域名一致的配置
+
+        access_log /usr/local/nginx/logs/wordpress.access.log; #该域名的请求日志配置
+        set $node_port 18080; #变量 WordPress在docker中暴露的端口
+        location / {
+            #各种转发设置 避免WordPress中静态资源路径不是nginx代理的域名 导致加载不出来
+            proxy_set_header X-Real-IP $remote_addr;
+            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+            proxy_set_header Host $http_host;
+            proxy_set_header X-NginX-Proxy true;
+            proxy_set_header Upgrade $http_upgrade;
+            proxy_set_header Connection "upgrade";
+            #代理的目标地址 docker运行程序时 一定要用IP而不是localhost！！！
+            proxy_pass http://127.0.0.1:$node_port$request_uri;
+            proxy_redirect off;
+            client_max_body_size 200m; #上传文件大小配置 覆盖全局配置
         }
     }
 }
