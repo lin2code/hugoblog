@@ -47,6 +47,9 @@ docker安装脚本
 `systemctl daemon-reload`  
 `systemctl restart docker`
 
+开机启动  
+`systemctl enable docker`
+
 ---
 
 ## 常用命令
@@ -110,7 +113,7 @@ docker cp 容器ID:容器内的文件路径 宿主机路径从容器内拷贝文
 * 查看volume `docker volume ls`
 * 查看volume详情 `docker volume inspect xxx`
 * 删除volume`docker volume rm xxx`
-* 查看容器关联的volume`docker inspect mongdb | grep Mounts -A 10`
+* 查看容器关联的volume`docker inspect mongodb | grep Mounts -A 10`
 * 删除容器和volume`docker rm -V mongodb` mongodb是容器名称
 * 列出无用卷`docker volume ls -qf dangling=true`
 
@@ -178,6 +181,8 @@ docker pull redis
 #port同启动参数中一致6379
 docker run -itd -p 3679:6379 -v /root/redis/redis.conf:/usr/local/etc/redis/redis.conf -v /root/redis/data/:/data --name myredis redis redis-server /usr/local/etc/redis/redis.conf
 ```
+
+`腾讯云centos8.0中启动多个redis容器时,，每个容器内部的配置端口最好不一样，不要都是6379，一样时很有可能把服务器卡死`
 
 * 手动运行
 
