@@ -1,5 +1,5 @@
 ---
-title: Dotnet Core注意事项
+title: Dotnet Core注意事项和笔记
 date: 2020-12-01T21:31:05+08:00
 lastmod: 2020-12-01T21:31:05+08:00
 author: 林二狗
@@ -50,6 +50,56 @@ Action中使用 `dynamic` 类型直接接收
 应在 debug 目录下执行`dotnet xxxx.dll --urls https://localhost:1234`  
 有问题时注意重新生成  
 
-## 后台运行
+## linux后台运行
 
 `nohup dotnet xxx.dll --urls https://localhost:1234 > nohup.out 2>&1 &`
+
+## 使用 watch 命令实时运行本地项目
+
+在项目上右键在控制台打开  
+然后直接运行 `dotnet watch run`  
+会使用当前项目配置后台运行程序，并检测文件变化实时更新  
+此时直接输入项目地址就可以访问，修改代码保存后程序自动更新  
+如需调试需停止控制台程序再手动调试  
+
+当然也可以附加watch进程到项目来实时更新和调试参考 [这里](https://dotnetcoretutorials.com/2020/01/01/live-coding-net-core-using-dotnet-watch/)
+
+## 制作成service
+
+由于种种原因 asp.net core不能像IIS一样热发布  
+但是可以配合nginx蓝绿发布  
+
+制作成 service 快速停止和启动程序加快发布效率
+
+创建服务定义文件:  
+`sudo nano /etc/systemd/system/kestrel-helloapp.service`
+
+以下是该应用程序的示例服务文件：
+
+```ini
+[Unit]
+Description=Example .NET Web API App running on Ubuntu
+
+[Service]
+WorkingDirectory=/var/www/helloapp
+ExecStart=/usr/bin/dotnet /var/www/helloapp/helloapp.dll
+Restart=always
+# Restart service after 10 seconds if the dotnet service crashes:
+RestartSec=10
+KillSignal=SIGINT
+SyslogIdentifier=dotnet-example
+User=www-data
+Environment=ASPNETCORE_ENVIRONMENT=Production
+Environment=DOTNET_PRINT_TELEMETRY_MESSAGE=false
+
+[Install]
+WantedBy=multi-user.target
+```
+
+在前面的示例中，该User选项指定了管理服务的用户。用户（www-data）必须存在并且对应用程序文件拥有适当的所有权。  
+User一般改成root之类。
+
+然后  
+`systemctl enable dotnet-mall-api.service`  
+`systemctl start dotnet-mall-api.service`  
+`systemctl status dotnet-mall-api.service`

@@ -8,6 +8,7 @@ cover: https://blog-lin2code-1252382346.file.myqcloud.com/img/cover8.jpg
 categories:
   - 吉他谱
 tags:
+  - gala
 # showcase: true
 draft: false
 ---
