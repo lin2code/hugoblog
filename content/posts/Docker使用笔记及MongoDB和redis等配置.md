@@ -43,11 +43,11 @@ docker安装脚本
 }
 ```
 
-然后  
+* 启动  
 `systemctl daemon-reload`  
 `systemctl restart docker`
 
-开机启动  
+* 开机启动  
 `systemctl enable docker`
 
 ---
@@ -110,12 +110,12 @@ docker cp 容器ID:容器内的文件路径 宿主机路径从容器内拷贝文
 ```
 
 * 进入容器中的命令行 `docker exec -it 69d1 /bin/bash` 69d1是容器ID
-* 查看volume `docker volume ls`
-* 查看volume详情 `docker volume inspect xxx`
-* 删除volume`docker volume rm xxx`
-* 查看容器关联的volume`docker inspect mongodb | grep Mounts -A 10`
-* 删除容器和volume`docker rm -V mongodb` mongodb是容器名称
-* 列出无用卷`docker volume ls -qf dangling=true`
+* 查看卷 `docker volume ls`
+* 查看卷详情 `docker volume inspect xxx`
+* 删除卷 `docker volume rm xxx`
+* 查看容器关联的卷 `docker inspect xxx_container_name | grep Mounts -A 10`
+* 删除容器和卷 `docker rm -V xxx_container_name`
+* 列出无用卷 `docker volume ls -qf dangling=true`
 
 ---
 
@@ -174,15 +174,20 @@ security.authorization 修改值为 enable
 
 ```bash
 docker pull redis
-#在root目录添加redis相关文件夹和配置
-#docker启动要注释redis.conf中logfile和dir字段
-#logfile /var/log/redis/redis.log
-#dir /var/lib/redis
-#port同启动参数中一致6379
-docker run -itd -p 3679:6379 -v /root/redis/redis.conf:/usr/local/etc/redis/redis.conf -v /root/redis/data/:/data --name myredis redis redis-server /usr/local/etc/redis/redis.conf
+# 在root目录添加redis相关文件夹和配置
+# docker启动要注释redis.conf中logfile和dir两行
+#  logfile /var/log/redis/redis.log
+#  dir /var/lib/redis
+# 修改port行 同启动参数中一致
+docker run -itd -p 3679:6379  
+-v /root/redis/redis.conf:/usr/local/etc/redis/redis.conf  
+-v /root/redis/data/:/data  
+--name myredis  
+redis  
+redis-server /usr/local/etc/redis/redis.conf
 ```
 
-`腾讯云centos8.0中启动多个redis容器时,，每个容器内部的配置端口最好不一样，不要都是6379，一样时很有可能把服务器卡死`
+`腾讯云centos8.0中启动多个redis容器时，每个容器内部的配置端口最好不一样，不要都是6379，一样时很有可能把服务器卡死`
 
 * 手动运行
 

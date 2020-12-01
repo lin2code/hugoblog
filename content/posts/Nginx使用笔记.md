@@ -4,7 +4,7 @@ date: 2020-09-29T16:43:17+08:00
 lastmod: 2020-09-29T16:43:17+08:00
 author: 林二狗
 # authorlink: https://author.site
-cover: /img/cover6.jpg
+cover: https://blog-lin2code-1252382346.file.myqcloud.com/img/cover6.jpg
 categories:
   - 笔记
 tags:

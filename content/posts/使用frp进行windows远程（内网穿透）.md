@@ -4,9 +4,9 @@ date: 2020-09-29T15:00:00+08:00
 lastmod: 2020-09-29T15:00:00+08:00
 author: 林二狗
 # authorlink: https://author.site
-cover: /img/cover4.jpg
+cover: https://blog-lin2code-1252382346.file.myqcloud.com/img/cover4.jpg
 categories:
-  - 笔记
+  - 奇计
 tags:
   - frp
   - 远程控制
