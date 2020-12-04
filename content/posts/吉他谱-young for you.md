@@ -1,5 +1,5 @@
 ---
-title: 吉他谱 young for you
+title: 吉他谱-young for you
 date: 2020-09-29T20:26:25+08:00
 lastmod: 2020-09-29T20:26:25+08:00
 author: gala
@@ -13,5 +13,5 @@ tags:
 draft: false
 ---
 
-![](https://blog-lin2code-1252382346.file.myqcloud.com/guitar-tab/guitar_young_for_you_1.jpg)
-![](https://blog-lin2code-1252382346.file.myqcloud.com/guitar-tab/guitar_young_for_you_2.jpg)
+![1](https://blog-lin2code-1252382346.file.myqcloud.com/guitar-tab/guitar_young_for_you_1.jpg)
+![2](https://blog-lin2code-1252382346.file.myqcloud.com/guitar-tab/guitar_young_for_you_2.jpg)

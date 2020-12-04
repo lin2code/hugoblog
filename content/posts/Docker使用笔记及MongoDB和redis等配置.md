@@ -129,6 +129,10 @@ docker run -itd --name mongodb -p 37017:27017 mongo --auth
 docker exec -it mongodb mongo admin
 ```
 
+注意 --auth 参数 启用数据库账号验证 如果创建容器的时候不启用 后续docker中很难修改
+
+docker 集群部署和账号设置待研究
+
 * 手动运行
 
 配置yum安装源 `vim /etc/yum.repos.d/mongodb-org-4.2.repo` 写入以下内容
@@ -149,14 +153,18 @@ url可替换为官网最新版本
 `sudo systemctl restart mongod` 重启  
 `sudo systemctl enable mongod` 开机启动  
 
-* 配置修改启用账号并允许远程连接
+配置修改启用账号并允许远程连接
 
 `vim /etc/mongod.conf`  
 net.bindIp 修改值为 0.0.0.0允许所有IP连接  
 security.authorization 修改值为 enable  
 重启
 
+手动运行MongoDB建议以集群方式启动
+
 * 初始化用户
+
+mongo shell中执行命令（docker中使用命令进入容器的 mongo shell）
 
 创建用户  
 `db.createUser({ user: 'adminabc', pwd: 'abcd123', roles: [ { role: "root", db: "admin" } ] });`  

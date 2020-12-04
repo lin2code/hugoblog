@@ -71,8 +71,8 @@ Action中使用 `dynamic` 类型直接接收
 
 制作成 service 快速停止和启动程序加快发布效率
 
-创建服务定义文件:  
-`sudo nano /etc/systemd/system/kestrel-helloapp.service`
+创建文件:  
+`sudo vim /etc/systemd/system/kestrel-helloapp.service`
 
 以下是该应用程序的示例服务文件：
 
@@ -103,3 +103,85 @@ User一般改成root之类。
 `systemctl enable dotnet-mall-api.service`  
 `systemctl start dotnet-mall-api.service`  
 `systemctl status dotnet-mall-api.service`
+
+`systemctl restart dotnet-mall-api.service`
+配置文件同步工具FreeFileSync体验非常好
+
+## 使用MongoDB事务
+
+首先需要在基础操作上增加一个 `IClientSessionHandle` 参数，类似这样
+
+```c#
+        /// <summary>
+        /// 带事务插入
+        /// </summary>
+        /// <param name="entity"></param>
+        public void InsertInTrans(IClientSessionHandle session, T entity)
+        {
+            GetCollection().InsertOne(session, entity);
+        }
+
+        /// <summary>
+        /// 带事务批量插入
+        /// </summary>
+        /// <param name="entitys"></param>
+        public void InsertManyInTrans(IClientSessionHandle session, IEnumerable<T> entitys)
+        {
+            if (entitys.Count() == 0)
+            {
+                return;
+            }
+            GetCollection().InsertMany(session, entitys);
+        }
+
+        /// <summary>
+        /// 事务中更新
+        /// </summary>
+        /// <param name="entity"></param>
+        public void UpdateInTrans(IClientSessionHandle session, T entity)
+        {
+            GetCollection().ReplaceOne(session, e => e.ID == entity.ID, entity);
+        }
+```
+
+这个的参数从连接后的数据库对象上获取，具体使用时建议注入一个数据库连接对象，通过连接对象获取
+
+```c#
+        public MongoClient MongoCli { get; set; }
+
+        /// <summary>
+        /// 获取可以执行事务的会话
+        /// </summary>
+        /// <returns></returns>
+        public IClientSessionHandle GetSession()
+        {
+            return MongoCli.StartSession();
+        }
+```
+
+使用
+
+```c#
+            //集群mongodb才能使用事务
+            using (var session = MainConn.GetSession())
+            {
+                session.StartTransaction();
+                try
+                {
+                    //......
+                    DBOrder.InsertInTrans(session, order);
+                    //commit前return主动session.AbortTransaction();
+                    //......
+
+                    session.CommitTransaction();
+                }
+                catch (Exception e)
+                {
+                    Logger.LogError(e, "创建订单失败");
+                    session.AbortTransaction();
+                    return Ok(new { code = -1, msg = "创建订单失败，内部异常" });
+                }
+            }
+```
+
+如果不是集群部署MongoDB会报错 待部署集群后测试更新本文进度
