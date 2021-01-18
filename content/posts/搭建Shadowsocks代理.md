@@ -39,8 +39,10 @@ method：python版服务端就填aes-256-cfb
 还可以添加两个配置用于代理服务器上的程序，只通过客户端使用则不用配置
 
 ```json
-"local_address": "127.0.0.1",
-"local_port":1080,
+{
+  "local_address": "127.0.0.1",
+  "local_port":1080,
+}
 ```
 
 ## 安装python和SS
@@ -48,7 +50,7 @@ method：python版服务端就填aes-256-cfb
 ```bash
 #ss使用python2或3都可以
 yum install python36
-pip install shadowsocks
+pip install shadowsocks #只安装了python3的时候用 pip3
 #启动ss
 ssserver -c /path/xxx.json -d start
 ```

@@ -26,6 +26,9 @@ limitTypes=".jpg" //直接赋值得到字符串
 //而属性绑定的方法得到的参数是由内部回调决定
 v-on:callback="cb"
 @cancelCall="cancelDone"//v-on的缩写
+
+v-on:keyup.enter="login"//keyup修饰符 监听按键
+v-on:keyup.enter.native="login"//el-input中需要加上native后缀才能生效
 ```
 
 ---
