@@ -157,7 +157,7 @@ url可替换为官网最新版本
 
 `vim /etc/mongod.conf`  
 net.bindIp 修改值为 0.0.0.0允许所有IP连接  
-security.authorization 修改值为 enable  
+security.authorization 修改值为 enabled  
 重启
 
 手动运行MongoDB建议以集群方式启动
@@ -173,6 +173,10 @@ mongo shell中执行命令（docker中使用命令进入容器的 mongo shell）
 分配权限 `db.grantRolesToUser("adminabc", [ { role:"dbOwner", db:"abcdb"} ]);`  
 或  
 修改权限 `db.updateUser("adminabc",{roles:[ {role:"root",db:"admin"} ]})`  
+
+robo3t中可以在admin数据库或其它数据库中右键users文件夹添加或删除用户  
+应用应使用具体数据库中的user访问数据库  
+管理员使用admin库中的user
 
 ---
 
